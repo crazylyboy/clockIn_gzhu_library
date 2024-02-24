@@ -21,7 +21,7 @@ class clockIn():
         self.xuhao = str(os.environ['XUHAO'])
         self.mima = str(os.environ['MIMA'])
         self.SEATNO = str(os.environ['SEATNO'])
-        self.pushplus = str(os.environ['PUSHPLUS'])
+        #self.pushplus = str(os.environ['PUSHPLUS'])
 
         if self.SEATNO == '':
             exit('请在Github Secrets中设置SEATNO')
@@ -119,7 +119,7 @@ class clockIn():
                 https://newcas.gzhu.edu.cn/cas/login?service=http://libbooking.gzhu.edu.cn/#/ic/home
                 ''')
 
-        if self.driver.title == 'Information Commons':
+        if self.driver.title == '广州大学图书馆IC空间管理系统':
             # 说明验证通过，直接进入了界面
             return self.step3()
 
@@ -204,14 +204,17 @@ class clockIn():
         tomorrow = tomorrow.strftime('%Y-%m-%d')
 
         # 将下面的值转换成json格式
-        reserve1 = json.loads(self.reserve_lib_seat(cookie, tomorrow, '9:00:00', '12:00:00'))
+        reserve1 = json.loads(self.reserve_lib_seat(cookie, tomorrow, '9:00:00', '13:00:00'))
         reserve2 = json.loads(self.reserve_lib_seat(cookie, tomorrow, '14:00:00', '18:00:00'))
-
+        reserve3 = json.loads(self.reserve_lib_seat(cookie, tomorrow, '18:00:00', '22:00:00'))
+        
         logger.info(reserve1)
         logger.info(reserve2)
+        logger.info(reserve3)
 
         message = f'''{tomorrow} 座位101-{self.SEATNO}，上午预定：{'预约成功' if reserve1.get('code') == 0 else '预约失败，设备在该时间段内已被预约'}
             {tomorrow} 座位101-{self.SEATNO}，下午预定：{'预约成功' if reserve2.get('code') == 0 else '预约失败，设备在该时间段内已被预约'}
+            {tomorrow} 座位101-{self.SEATNO}，晚上预定：{'预约成功' if reserve3.get('code') == 0 else '预约失败，设备在该时间段内已被预约'}
         '''
 
         logger.info(message)
@@ -229,10 +232,10 @@ class clockIn():
 
         payload = json.dumps({
             "sysKind": 8,
-            "appAccNo": 101598216,
+            "appAccNo": 101586044,
             "memberKind": 1,
             "resvMember": [
-                101598216
+                101586044
             ],
             "resvBeginTime": f"{tomorrow} {startTime}",
             "resvEndTime": f"{tomorrow} {endTime}",

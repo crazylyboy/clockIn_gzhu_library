@@ -1,4 +1,4 @@
-selenium
-requests
+selenium == 4.11.2
+requests == 2.31.0
 loguru
 func_timeout

@@ -171,7 +171,7 @@ class clockIn():
         """正在转到图书馆界面
         """
         wait = WebDriverWait(self.driver, 10)
-        wait.until(EC.title_contains("Information Commons"))
+        wait.until(EC.title_contains("广州大学图书馆IC空间管理系统"))
 
         logger.info('step2 正在转到图书馆界面')
         logger.info('标题: ' + self.driver.title)
